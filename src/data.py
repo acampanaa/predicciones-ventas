@@ -41,20 +41,20 @@ def dividir_datos(df, verbose=True):
     return (X_train, y_train), (X_test, y_test), (X_val, y_val)
 
 
-def guardar_division(df, destino=config.DATA_PROC, verbose=True):
+def guardar_division(train, test, val, destino=config.DATA_PROC, verbose=True):
     """
-    Divide el dataset y escribe 3 CSV en disco: train.csv, test.csv y validation.csv.
+    Escribe la división ya calculada en 3 CSV: train.csv, test.csv y validation.csv.
 
-    Cada CSV contiene las columnas completas (predictoras + objetivo).
+    Recibe las tres tuplas (X, y) que devuelve ``dividir_datos``. Cada CSV
+    contiene las columnas completas (predictoras + objetivo).
     Devuelve un diccionario {nombre: ruta} con las rutas generadas.
     """
     destino.mkdir(parents=True, exist_ok=True)
-    (X_train, y_train), (X_test, y_test), (X_val, y_val) = dividir_datos(df, verbose=verbose)
 
     subconjuntos = {
-        "train": (X_train, y_train),
-        "test": (X_test, y_test),
-        "validation": (X_val, y_val),
+        "train": train,
+        "test": test,
+        "validation": val,
     }
 
     rutas = {}

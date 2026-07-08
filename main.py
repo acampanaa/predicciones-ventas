@@ -19,7 +19,7 @@ import sys
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-from src.data import cargar_datos, dividir_datos
+from src.data import cargar_datos, dividir_datos, guardar_division
 from src.eda import explorar
 from src.models import entrenar_modelos
 from src.evaluate import evaluar_modelos
@@ -38,9 +38,10 @@ def main():
     df = cargar_datos()
     explorar(df)
 
-    # 2. División 70/20/10
+    # 2. División 70/20/10 (+ guardado de los 3 CSV en data/processed/)
     seccion("2. DIVISIÓN DEL DATASET (70% Train / 20% Test / 10% Validación)")
     train, test, val = dividir_datos(df)
+    guardar_division(train, test, val)
 
     # 3. Entrenamiento de los 2 modelos
     seccion("3. ENTRENAMIENTO DE 2 MODELOS (2 algoritmos diferentes)")
