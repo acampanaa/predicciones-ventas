@@ -39,3 +39,31 @@ def dividir_datos(df, verbose=True):
         print(f"Validación    : {len(X_val):3d} muestras ({len(X_val)/total:.0%})")
 
     return (X_train, y_train), (X_test, y_test), (X_val, y_val)
+
+
+def guardar_division(df, destino=config.DATA_PROC, verbose=True):
+    """
+    Divide el dataset y escribe 3 CSV en disco: train.csv, test.csv y validation.csv.
+
+    Cada CSV contiene las columnas completas (predictoras + objetivo).
+    Devuelve un diccionario {nombre: ruta} con las rutas generadas.
+    """
+    destino.mkdir(parents=True, exist_ok=True)
+    (X_train, y_train), (X_test, y_test), (X_val, y_val) = dividir_datos(df, verbose=verbose)
+
+    subconjuntos = {
+        "train": (X_train, y_train),
+        "test": (X_test, y_test),
+        "validation": (X_val, y_val),
+    }
+
+    rutas = {}
+    for nombre, (X, y) in subconjuntos.items():
+        ruta = destino / f"{nombre}.csv"
+        # Reunimos predictoras + objetivo conservando el orden original de filas.
+        X.assign(**{config.TARGET: y}).to_csv(ruta, index=False)
+        rutas[nombre] = ruta
+        if verbose:
+            print(f"  -> {ruta.name:15s} ({len(X)} filas) guardado en {ruta}")
+
+    return rutas

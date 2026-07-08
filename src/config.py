@@ -5,6 +5,7 @@ from pathlib import Path
 # --- Rutas del proyecto ---
 RAIZ = Path(__file__).resolve().parent.parent
 DATA_RAW = RAIZ / "data" / "raw" / "advertising.csv"
+DATA_PROC = RAIZ / "data" / "processed"   # CSV divididos: train / test / validation
 FIG_DIR = RAIZ / "outputs" / "figuras"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
 
